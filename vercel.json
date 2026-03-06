@@ -2,17 +2,17 @@
   "functions": {
     "api/attack.py": {
       "runtime": "python3.9",
-      "maxDuration": 60
+      "maxDuration": 10
     }
   },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/attack.py"
+      "source": "/api/(.*)",
+      "destination": "/api/attack"
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
