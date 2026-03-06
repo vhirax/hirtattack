@@ -1,0 +1,18 @@
+{
+  "functions": {
+    "api/attack.py": {
+      "runtime": "python3.9",
+      "maxDuration": 60
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/attack.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
