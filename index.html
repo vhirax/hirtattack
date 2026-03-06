@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIRAKO · DDOS ATTACK SYSTEM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0c0f;
+            font-family: 'Courier New', monospace;
+            color: #00ff9d;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: 
+                linear-gradient(rgba(0, 255, 157, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 157, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Matrix rain effect */
+        .matrix-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 157, 0.1) 0px,
+                rgba(0, 0, 0, 0.8) 1px,
+                transparent 2px
+            );
+            animation: matrix 20s linear infinite;
+        }
+
+        @keyframes matrix {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 30px; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            border: 1px solid #00ff9d;
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.2);
+            background-color: rgba(10, 12, 15, 0.98);
+            backdrop-filter: blur(5px);
+            position: relative;
+            border-radius: 5px;
+        }
+
+        /* Cyber header */
+        .cyber-header {
+            border-bottom: 2px solid #00ff9d;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-header::before {
+            content: "HIRAKO SYSTEMS // DDOS ATTACK v3.0";
+            position: absolute;
+            top: 5px;
+            left: 10px;
+            font-size: 10px;
+            color: rgba(0, 255, 157, 0.3);
+        }
+
+        .cyber-header::after {
+            content: "█";
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: blink 1s infinite;
+            color: #00ff9d;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .title {
+            font-size: 4em;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            text-shadow: 0 0 15px #00ff9d;
+            font-weight: bold;
+            margin-bottom: 5px;
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { text-shadow: 0 0 10px #00ff9d; }
+            33% { text-shadow: -3px 0 #ff0000, 3px 0 #0000ff; }
+            66% { text-shadow: 3px -2px #00ff00, -2px 2px #ff00ff; }
+        }
+
+        .subtitle {
+            color: #00cc7d;
+            font-size: 14px;
+            letter-spacing: 3px;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 10em;
+            opacity: 0.03;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+            color: #00ff9d;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 20px;
+            animation: watermarkPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes watermarkPulse {
+            0%, 100% { opacity: 0.03; }
+            50% { opacity: 0.07; }
+        }
+
+        /* Attack Panel */
+        .attack-panel {
+            padding: 30px;
+            border-bottom: 1px solid #00ff9d;
+            position: relative;
+            z-index: 1;
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .panel-title h2 {
+            color: #00ff9d;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #00cc7d;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            background: #1a1d24;
+            border: 1px solid #00ff9d;
+            color: #00ff9d;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            border-radius: 3px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+            border-color: #00ff9d;
+        }
+
+        .input-group input::placeholder {
+            color: rgba(0, 255, 157, 0.3);
+        }
+
+        .attack-button {
+            width: 100%;
+            padding: 18px;
+            background: transparent;
+            border: 2px solid #00ff9d;
+            color: #00ff9d;
+            font-family: 'Courier New', monospace;
+            font-size: 22px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .attack-button:hover:not(:disabled) {
+            background: #00ff9d;
+            color: #0a0c0f;
+            box-shadow: 0 0 40px rgba(0, 255, 157, 0.5);
+        }
+
+        .attack-button:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+
+        .attack-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #666;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stop-button {
+            background: transparent;
+            border: 2px solid #ff4444;
+            color: #ff4444;
+        }
+
+        .stop-button:hover:not(:disabled) {
+            background: #ff4444;
+            color: #0a0c0f;
+            box-shadow: 0 0 40px rgba(255, 68, 68, 0.5);
+        }
+
+        /* Logs Panel */
+        .logs-panel {
+            padding: 30px;
+        }
+
+        .logs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .logs-header h3 {
+            color: #00ff9d;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background: #00ff9d;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.stop {
+            background: #ff4444;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .logs-container {
+            background: #1a1d24;
+            border: 1px solid #00ff9d;
+            height: 400px;
+            overflow-y: auto;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            position: relative;
+        }
+
+        .log-entry {
+            border-bottom: 1px solid rgba(0, 255, 157, 0.1);
+            padding: 5px 0;
+            color: #00cc7d;
+            white-space: pre-wrap;
+            word-break: break-all;
+            animation: fadeIn 0.3s;
+            font-size: 12px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .log-entry.error {
+            color: #ff6b6b;
+        }
+
+        .log-entry.success {
+            color: #00ff9d;
+        }
+
+        .log-entry.system {
+            color: #4da6ff;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            border: 1px solid #00ff9d;
+            padding: 12px;
+            text-align: center;
+            background: rgba(0, 255, 157, 0.05);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: rgba(0, 255, 157, 0.7);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ff9d;
+            font-family: 'Courier New', monospace;
+        }
+
+        .stat-value.small {
+            font-size: 18px;
+        }
+
+        /* Footer */
+        .cyber-footer {
+            border-top: 1px solid #00ff9d;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            color: rgba(0, 255, 157, 0.5);
+            position: relative;
+        }
+
+        .warning-text {
+            color: #ff4444;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1d24;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00ff9d;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00cc7d;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5em;
+                letter-spacing: 5px;
+            }
+            
+            .watermark {
+                font-size: 6em;
+            }
+            
+            .attack-panel, .logs-panel {
+                padding: 20px;
+            }
+            
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-overlay"></div>
+    <div class="watermark">HIRAKO</div>
+    
+    <div class="container">
+        <div class="cyber-header">
+            <div class="title">HIRAKO</div>
+            <div class="subtitle">DDOS ATTACK SYSTEM v3.0 // TERMUX EDITION</div>
+        </div>
+
+        <div class="attack-panel">
+            <div class="panel-title">
+                <h2>> ATTACK PARAMETERS_</h2>
+                <span class="status-dot" id="statusDot"></span>
+            </div>
+
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>Target Domain/IP</label>
+                    <input type="text" id="target" placeholder="example.com or 192.168.1.1" value="example.com">
+                </div>
+
+                <div class="input-group">
+                    <label>Port (optional)</label>
+                    <input type="text" id="port" placeholder="80, 443, 8080">
+                </div>
+
+                <div class="input-group">
+                    <label>Attack Mode</label>
+                    <select id="mode">
+                        <option value="1">Auto Spam (Infinite)</option>
+                        <option value="2">Custom Request</option>
+                    </select>
+                </div>
+
+                <div class="input-group" id="customRequestDiv" style="display: none;">
+                    <label>Total Requests</label>
+                    <input type="number" id="reqCount" value="100" min="1" max="10000">
+                </div>
+
+                <div class="input-group">
+                    <label>Concurrency (Threads)</label>
+                    <input type="number" id="concurrency" value="10" min="1" max="100">
+                </div>
+
+                <div class="input-group">
+                    <label>Enable Logging</label>
+                    <select id="logging">
+                        <option value="Y">YES</option>
+                        <option value="N">NO</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="attack-button" id="startAttack">
+                    ⚡ INITIATE ATTACK ⚡
+                </button>
+                <button class="attack-button stop-button" id="stopAttack" disabled>
+                    ⚠️ ABORT ATTACK ⚠️
+                </button>
+            </div>
+        </div>
+
+        <div class="logs-panel">
+            <div class="logs-header">
+                <h3>> LIVE ATTACK LOGS_</h3>
+                <div class="status-indicator">
+                    <span class="status-dot" id="recordingDot"></span>
+                    <span id="recordingStatus">STANDBY</span>
+                </div>
+            </div>
+
+            <div class="logs-container" id="logs">
+                <div class="log-entry system">[SYSTEM] HIRAKO DDOS System initialized...</div>
+                <div class="log-entry system">[SYSTEM] Ready for attack sequence...</div>
+                <div class="log-entry system">[SYSTEM] Legal disclaimer: Only use on authorized targets</div>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-label">Requests Sent</div>
+                    <div class="stat-value" id="packetCount">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Success</div>
+                    <div class="stat-value" id="successCount">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Failed</div>
+                    <div class="stat-value" id="failCount">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Success Rate</div>
+                    <div class="stat-value" id="successRate">0%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cyber-footer">
+            <div>HIRAKO SYSTEMS // EDUCATIONAL PURPOSE ONLY</div>
+            <div class="warning-text">⚠️ WARNING: Only use on systems you own or have permission to test ⚠️</div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const modeSelect = document.getElementById('mode');
+        const customRequestDiv = document.getElementById('customRequestDiv');
+        const startBtn = document.getElementById('startAttack');
+        const stopBtn = document.getElementById('stopAttack');
+        const logsContainer = document.getElementById('logs');
+        const packetCountSpan = document.getElementById('packetCount');
+        const successCountSpan = document.getElementById('successCount');
+        const failCountSpan = document.getElementById('failCount');
+        const successRateSpan = document.getElementById('successRate');
+        const statusDot = document.getElementById('statusDot');
+        const recordingDot = document.getElementById('recordingDot');
+        const recordingStatus = document.getElementById('recordingStatus');
+
+        // State
+        let isAttacking = false;
+        let attackId = null;
+        let statsInterval = null;
+        let packetCount = 0;
+        let successCount = 0;
+        let failCount = 0;
+
+        // Show/hide custom request input based on mode
+        modeSelect.addEventListener('change', function() {
+            customRequestDiv.style.display = this.value === '2' ? 'block' : 'none';
+        });
+
+        // Add log entry
+        function addLog(message, type = 'success') {
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            
+            const timestamp = new Date().toLocaleTimeString('id-ID', { hour12: false });
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            
+            logsContainer.appendChild(logEntry);
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+            
+            // Keep only last 200 logs
+            while (logsContainer.children.length > 200) {
+                logsContainer.removeChild(logsContainer.firstChild);
+            }
+        }
+
+        // Update stats
+        function updateStats() {
+            packetCountSpan.textContent = packetCount;
+            successCountSpan.textContent = successCount;
+            failCountSpan.textContent = failCount;
+            
+            const rate = packetCount > 0 ? Math.round((successCount / packetCount) * 100) : 0;
+            successRateSpan.textContent = rate + '%';
+        }
+
+        // Fetch stats from server
+        async function fetchStats() {
+            if (!attackId || !isAttacking) return;
+            
+            try {
+                const response = await fetch(`/api/attack?action=stats&id=${attackId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    packetCount = data.stats.total || 0;
+                    successCount = data.stats.success || 0;
+                    failCount = data.stats.failed || 0;
+                    updateStats();
+                    
+                    // Add logs if any
+                    if (data.logs && data.logs.length > 0) {
+                        data.logs.forEach(log => {
+                            const isError = log.includes('ERROR') || log.includes('Failed');
+                            addLog(log, isError ? 'error' : 'success');
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching stats:', error);
+            }
+        }
+
+        // Start attack
+        startBtn.addEventListener('click', async function() {
+            // Get parameters
+            const target = document.getElementById('target').value.trim();
+            const port = document.getElementById('port').value.trim();
+            const mode = document.getElementById('mode').value;
+            const reqCount = mode === '2' ? parseInt(document.getElementById('reqCount').value) : null;
+            const concurrency = parseInt(document.getElementById('concurrency').value) || 10;
+            const logging = document.getElementById('logging').value;
+
+            // Validate
+            if (!target) {
+                addLog('[ERROR] Target tidak boleh kosong!', 'error');
+                return;
+            }
+
+            // Validate concurrency
+            if (concurrency < 1 || concurrency > 100) {
+                addLog('[ERROR] Concurrency harus antara 1-100', 'error');
+                return;
+            }
+
+            // Validate request count for custom mode
+            if (mode === '2' && (!reqCount || reqCount < 1 || reqCount > 10000)) {
+                addLog('[ERROR] Total requests harus antara 1-10000', 'error');
+                return;
+            }
+
+            // Disable start button, enable stop button
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            isAttacking = true;
+            
+            // Update UI
+            statusDot.style.background = '#00ff9d';
+            recordingDot.style.background = '#00ff9d';
+            recordingStatus.textContent = 'ATTACKING';
+            
+            // Reset counters
+            packetCount = 0;
+            successCount = 0;
+            failCount = 0;
+            updateStats();
+            
+            addLog('[SYSTEM] Initializing attack sequence...', 'system');
+            
+            try {
+                // Start attack via API
+                const response = await fetch('/api/attack', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        target,
+                        port,
+                        mode,
+                        reqCount,
+                        concurrency,
+                        logging,
+                        action: 'start'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    attackId = data.attackId;
+                    addLog(`[SYSTEM] Attack ID: ${attackId}`, 'system');
+                    addLog(`[SYSTEM] Target: ${target}${port ? ':' + port : ''}`, 'system');
+                    addLog(`[SYSTEM] Mode: ${mode === '1' ? 'Auto Spam (Infinite)' : 'Custom (' + reqCount + ' requests)'}`, 'system');
+                    addLog(`[SYSTEM] Concurrency: ${concurrency} threads`, 'system');
+                    addLog(`[SYSTEM] Attack STARTED!`, 'system');
+                    
+                    // Start polling for stats
+                    statsInterval = setInterval(fetchStats, 1000);
+                } else {
+                    throw new Error(data.error || 'Unknown error');
+                }
+            } catch (error) {
+                addLog(`[ERROR] Failed to start attack: ${error.message}`, 'error');
+                stopAttack();
+            }
+        });
+
+        // Stop attack function
+        async function stopAttack() {
+            if (attackId) {
+                try {
+                    await fetch('/api/attack', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            action: 'stop',
+                            id: attackId
+                        })
+                    });
+                } catch (error) {
+                    console.error('Error stopping attack:', error);
+                }
+            }
+            
+            // Clear interval
+            if (statsInterval) {
+                clearInterval(statsInterval);
+                statsInterval = null;
+            }
+            
+            // Update UI
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            isAttacking = false;
+            attackId = null;
+            
+            statusDot.style.background = '#ff4444';
+            recordingDot.style.background = '#ff4444';
+            recordingStatus.textContent = 'STANDBY';
+            
+            addLog('[SYSTEM] Attack TERMINATED.', 'system');
+            addLog(`[SYSTEM] Final stats - Total: ${packetCount}, Success: ${successCount}, Failed: ${failCount}`, 'system');
+        }
+
+        // Stop attack button
+        stopBtn.addEventListener('click', stopAttack);
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            if (isAttacking) {
+                stopAttack();
+            }
+        });
+
+        // Initial log
+        addLog('[SYSTEM] Ready. Enter target parameters and click INITIATE ATTACK.', 'system');
+    </script>
+</body>
+</html>
